@@ -1,0 +1,58 @@
+[
+  {
+    "name": "baseline",
+    "description": "The catalog from DESIGN.md: ORD-1001 can ship, ORD-1002 is short on stock, ORD-1003 is unpaid.",
+    "orders": {
+      "ORD-1001": {"id": "ORD-1001", "customer": "Acme Retail", "sku": "SKU-LAP-14", "qty": 2, "status": "paid", "ship_to": "Austin, TX"},
+      "ORD-1002": {"id": "ORD-1002", "customer": "Northwind", "sku": "SKU-MON-27", "qty": 5, "status": "paid", "ship_to": "Seattle, WA"},
+      "ORD-1003": {"id": "ORD-1003", "customer": "Contoso", "sku": "SKU-KB-MECH", "qty": 10, "status": "pending", "ship_to": "Boston, MA"}
+    },
+    "inventory": {
+      "SKU-LAP-14": {"sku": "SKU-LAP-14", "name": "14in Ultrabook", "on_hand": 12, "warehouse": "DFW"},
+      "SKU-MON-27": {"sku": "SKU-MON-27", "name": "27in Monitor", "on_hand": 3, "warehouse": "SEA"},
+      "SKU-KB-MECH": {"sku": "SKU-KB-MECH", "name": "Mechanical Keyboard", "on_hand": 40, "warehouse": "BOS"}
+    }
+  },
+  {
+    "name": "restocked_monitors",
+    "description": "Monitors were restocked, so ORD-1002 can now ship as well as ORD-1001.",
+    "orders": {
+      "ORD-1001": {"id": "ORD-1001", "customer": "Acme Retail", "sku": "SKU-LAP-14", "qty": 2, "status": "paid", "ship_to": "Austin, TX"},
+      "ORD-1002": {"id": "ORD-1002", "customer": "Northwind", "sku": "SKU-MON-27", "qty": 5, "status": "paid", "ship_to": "Seattle, WA"},
+      "ORD-1003": {"id": "ORD-1003", "customer": "Contoso", "sku": "SKU-KB-MECH", "qty": 10, "status": "pending", "ship_to": "Boston, MA"}
+    },
+    "inventory": {
+      "SKU-LAP-14": {"sku": "SKU-LAP-14", "name": "14in Ultrabook", "on_hand": 12, "warehouse": "DFW"},
+      "SKU-MON-27": {"sku": "SKU-MON-27", "name": "27in Monitor", "on_hand": 8, "warehouse": "SEA"},
+      "SKU-KB-MECH": {"sku": "SKU-KB-MECH", "name": "Mechanical Keyboard", "on_hand": 40, "warehouse": "BOS"}
+    }
+  },
+  {
+    "name": "unpaid_laptop_order",
+    "description": "ORD-1001 is still pending payment, so it cannot ship even though laptops are in stock.",
+    "orders": {
+      "ORD-1001": {"id": "ORD-1001", "customer": "Acme Retail", "sku": "SKU-LAP-14", "qty": 2, "status": "pending", "ship_to": "Austin, TX"},
+      "ORD-1002": {"id": "ORD-1002", "customer": "Northwind", "sku": "SKU-MON-27", "qty": 5, "status": "paid", "ship_to": "Seattle, WA"},
+      "ORD-1003": {"id": "ORD-1003", "customer": "Contoso", "sku": "SKU-KB-MECH", "qty": 10, "status": "pending", "ship_to": "Boston, MA"}
+    },
+    "inventory": {
+      "SKU-LAP-14": {"sku": "SKU-LAP-14", "name": "14in Ultrabook", "on_hand": 12, "warehouse": "DFW"},
+      "SKU-MON-27": {"sku": "SKU-MON-27", "name": "27in Monitor", "on_hand": 3, "warehouse": "SEA"},
+      "SKU-KB-MECH": {"sku": "SKU-KB-MECH", "name": "Mechanical Keyboard", "on_hand": 40, "warehouse": "BOS"}
+    }
+  },
+  {
+    "name": "keyboard_order_paid_low_stock",
+    "description": "ORD-1003 has been paid, but only 6 keyboards are on hand for a quantity of 10.",
+    "orders": {
+      "ORD-1001": {"id": "ORD-1001", "customer": "Acme Retail", "sku": "SKU-LAP-14", "qty": 2, "status": "paid", "ship_to": "Austin, TX"},
+      "ORD-1002": {"id": "ORD-1002", "customer": "Northwind", "sku": "SKU-MON-27", "qty": 5, "status": "paid", "ship_to": "Seattle, WA"},
+      "ORD-1003": {"id": "ORD-1003", "customer": "Contoso", "sku": "SKU-KB-MECH", "qty": 10, "status": "paid", "ship_to": "Boston, MA"}
+    },
+    "inventory": {
+      "SKU-LAP-14": {"sku": "SKU-LAP-14", "name": "14in Ultrabook", "on_hand": 12, "warehouse": "DFW"},
+      "SKU-MON-27": {"sku": "SKU-MON-27", "name": "27in Monitor", "on_hand": 3, "warehouse": "SEA"},
+      "SKU-KB-MECH": {"sku": "SKU-KB-MECH", "name": "Mechanical Keyboard", "on_hand": 6, "warehouse": "BOS"}
+    }
+  }
+]

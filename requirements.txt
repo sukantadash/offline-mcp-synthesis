@@ -3,3 +3,4 @@ pandas
 python-dotenv
 jsonschema
 fastmcp
+mlflow>=3.18,<4

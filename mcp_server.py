@@ -4,6 +4,10 @@ This process is a reference for the tool schema and the catalog in DESIGN.md.
 offline-mcp-synthesis does not start it, connect to it, or call its tools.
 The teacher writes simulated tool results from the schema and the sample conversations.
 
+stateful_env.py does start it, once per scenario, with ORDER_OPS_STATE pointing
+at a JSON state file. The server then loads its orders and inventory from that
+file and writes the updated state back after every successful shipment.
+
 Start, if you want to inspect the tools yourself:
 
     python mcp_server.py
@@ -13,7 +17,9 @@ Streamable HTTP is then available at http://127.0.0.1:8008/mcp.
 from __future__ import annotations
 
 import copy
+import json
 import os
+from pathlib import Path
 from typing import Optional
 
 from fastmcp import FastMCP
@@ -75,6 +81,39 @@ def reset_catalog() -> None:
 
 reset_catalog()
 
+# Optional per-scenario state file: {"orders": {...}, "inventory": {...}, "shipments": [...]}
+STATE_FILE = os.environ.get("ORDER_OPS_STATE")
+
+
+def snapshot() -> dict:
+    """Return a copy of the current orders, inventory, and shipment log."""
+    return {
+        "orders": copy.deepcopy(ORDERS),
+        "inventory": copy.deepcopy(INVENTORY),
+        "shipments": copy.deepcopy(SHIPMENTS),
+    }
+
+
+def load_state(path: str | Path) -> None:
+    """Replace the catalog with the state stored in a JSON file."""
+    state = json.loads(Path(path).read_text(encoding="utf-8"))
+    ORDERS.clear()
+    ORDERS.update(state["orders"])
+    INVENTORY.clear()
+    INVENTORY.update(state["inventory"])
+    SHIPMENTS.clear()
+    SHIPMENTS.extend(state.get("shipments", []))
+
+
+def _persist() -> None:
+    """Write the current state back to STATE_FILE, when one is configured."""
+    if STATE_FILE:
+        Path(STATE_FILE).write_text(json.dumps(snapshot(), indent=2), encoding="utf-8")
+
+
+if STATE_FILE:
+    load_state(STATE_FILE)
+
 
 def list_orders(status: Optional[str] = None) -> list[dict]:
     """List orders, optionally filtered by status."""
@@ -121,6 +160,7 @@ def create_shipment(order_id: str, carrier: str = "UPS") -> dict:
         "warehouse": item["warehouse"],
     }
     SHIPMENTS.append(shipment)
+    _persist()
     return shipment
 
 
